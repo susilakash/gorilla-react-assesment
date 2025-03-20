@@ -1,0 +1,23 @@
+.users-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-table {
+    border: 1px solid paleturquoise;
+    width: 60%;
+}
+
+.user-table th {
+    background-color: black;
+    color: white;
+}
+
+.user-table th,
+.user-table td {
+    padding: 1em;
+    font-size: larger;
+    text-align: center;
+}
