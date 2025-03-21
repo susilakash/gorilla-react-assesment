@@ -2,7 +2,7 @@
     width: 20px;
     height: 20px;
     border: 5px solid rgb(3, 3, 3);
-    border-top: 5px solid transparent;
+    border-top: 5px solid rgb(203, 199, 199);
     border-radius: 100%;
     animation: spin 0.5s ease-in-out infinite;
 }
