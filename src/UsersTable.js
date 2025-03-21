@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Table from './Table';
 
 function UserTable() {
 
     const [allTaskCompUsers, setAllTaskCompUsers] = useState([])
     const [usersData, setUsersData] = useState([])
+    const [errorMessages, setErrorMessages] = useState({ usersNotFound: '', apiError: '' })
+    const [isAPILoading, setIsAPILoading] = useState({ tasksAPI: true, usersAPI: true })
 
     const validUsers = async () => {
-        const data = await axios.get('https://nextjs-boilerplate-five-plum-29.vercel.app/api/tasks')
-            .then(res => res.data)
-            .catch(err => console.log(err))
+        let tasksData = await axios.get('https://nextjs-boilerplate-five-plum-29.vercel.app/api/tasks')
+            .then(res => {
+                setIsAPILoading(prev => ({ ...prev, tasksAPI: false }))
+                return res.data
+            })
+            .catch(err => {
+                setIsAPILoading(prev => ({ ...prev, tasksAPI: false }))
+                setErrorMessages(prev => ({ ...prev, apiError: 'Error on fetching Tasks Data' }))
+                console.log(err)
+            })
 
         let splittedUsers = {}
-        data?.forEach(item => {
+        tasksData?.forEach(item => {
             if (splittedUsers[item.userId]) {
                 splittedUsers[item.userId].push(item)
             } else {
@@ -31,11 +41,19 @@ function UserTable() {
         let fetchAllData = await Promise.all(
             allTaskCompUsers?.map(async (user) => {
                 return await axios.get(`https://nextjs-boilerplate-five-plum-29.vercel.app/api/users/${user}`)
-                    .then(res => res.data)
-                    .catch(err => console.log(err))
+                    .then(res => {
+                        setIsAPILoading(prev => ({ ...prev, usersAPI: false }))
+                        return res.data
+                    })
+                    .catch(err => {
+                        setIsAPILoading(prev => ({ ...prev, usersAPI: false }))
+                        setErrorMessages(prev => ({ ...prev, apiError: "Error on Fetching Users Data" }))
+                        console.log(err)
+                    })
             })
         )
-        setUsersData(fetchAllData)
+
+        setUsersData(fetchAllData.filter(data => data !== undefined))
     }
 
 
@@ -45,25 +63,19 @@ function UserTable() {
 
     useEffect(() => {
         if (allTaskCompUsers.length !== 0) fetchUsersData()
+        else setErrorMessages(prev => ({ ...prev, usersNotFound: 'Users Not Found' }))
     }, [allTaskCompUsers])
+
+    const apiErrorMessage = errorMessages.apiError ? errorMessages.apiError : usersData?.length > 0 ? '' : errorMessages.usersNotFound
 
     return (
         <div className='users-container'>
             <h1 className='title'>stackblitz</h1>
-            <table className='user-table'>
-                <tr>
-                    <th>Name</th>
-                    <th>User ID</th>
-                    <th>Email</th>
-                </tr>
-                {usersData.map((user) => {
-                    return (<tr>
-                        <td>{user.name}</td>
-                        <td>{user.id}</td>
-                        <td>{user.email}</td>
-                    </tr>)
-                })}
-            </table>
+
+            {isAPILoading.usersAPI && isAPILoading.tasksAPI ? <h3>API Loading...</h3> :
+                apiErrorMessage ? apiErrorMessage :
+                    <Table usersData={usersData} />
+            }
         </div>
     )
 
