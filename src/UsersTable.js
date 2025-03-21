@@ -66,15 +66,14 @@ function UserTable() {
         else setErrorMessages(prev => ({ ...prev, usersNotFound: 'Users Not Found' }))
     }, [allTaskCompUsers])
 
-    const apiErrorMessage = errorMessages.apiError ? errorMessages.apiError : usersData?.length > 0 ? '' : errorMessages.usersNotFound
+    const apiErrorMessage = errorMessages.apiError ? errorMessages.apiError : usersData?.length > 0 || isAPILoading.usersAPI ? '' : errorMessages.usersNotFound
 
     return (
         <div className='users-container'>
             <h1 className='title'>stackblitz</h1>
 
             {isAPILoading.usersAPI && isAPILoading.tasksAPI ? <h3>API Loading...</h3> :
-                apiErrorMessage ? apiErrorMessage :
-                    <Table usersData={usersData} />
+                apiErrorMessage ? apiErrorMessage : usersData?.length > 0 && <Table usersData={usersData} />
             }
         </div>
     )

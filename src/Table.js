@@ -11,7 +11,7 @@ const Table = ({ usersData }) => {
                 </tr>
             </thead>
             <tbody>
-                {usersData?.length > 0 && usersData?.map((user) => {
+                {usersData?.map((user) => {
                     return (<tr key={user?.id}>
                         <td>{user?.name}</td>
                         <td>{user?.id}</td>
