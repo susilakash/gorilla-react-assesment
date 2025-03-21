@@ -72,7 +72,7 @@ function UserTable() {
 
     return (
         <div className='users-container'>
-            <h1 className='title'>stackblitz</h1>
+            <h1 className='title'>Stackblitz</h1>
 
             {isAPILoading.usersAPI && isAPILoading.tasksAPI ? <LoadingCircle /> :
                 apiErrorMessage ? <h3>{apiErrorMessage}</h3> : usersData?.length > 0 && <Table usersData={usersData} />

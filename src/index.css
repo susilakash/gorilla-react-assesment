@@ -1,2 +1,6 @@
 @import url('./styles/userTable.css');
 @import url('./styles/loadingcircle.css');
+
+body {
+    font-family: "Sofia", sans-serif;
+}
