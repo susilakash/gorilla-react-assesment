@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Table from './Table';
-import LoadingCircle from './LoadingCircle';
+import LoadingCircle from '../utils/LoadingCircle';
 
 
 function UserTable() {
@@ -75,7 +75,7 @@ function UserTable() {
             <h1 className='title'>stackblitz</h1>
 
             {isAPILoading.usersAPI && isAPILoading.tasksAPI ? <LoadingCircle /> :
-                apiErrorMessage ? apiErrorMessage : usersData?.length > 0 && <Table usersData={usersData} />
+                apiErrorMessage ? <h3>{apiErrorMessage}</h3> : usersData?.length > 0 && <Table usersData={usersData} />
             }
         </div>
     )

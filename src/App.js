@@ -1,10 +1,8 @@
-import UserTable from './UsersTable';
+import UserTable from './components/UsersTable';
 
 function App() {
   return (
-    <>
-      <UserTable />
-    </>
+    <UserTable />
   );
 }
 
